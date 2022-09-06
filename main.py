@@ -246,3 +246,5 @@ def classify(sentence, show_details=False):
     return_results =[[classes[r[0]],r[1]] for r in results]
     print ("%s \n classification: %s" % (sentence, return_results))
     return return_results
+
+classify("All cows are weird!")
