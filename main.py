@@ -1,15 +1,17 @@
 # use natural language toolkit
 import nltk
+# nltk.download('punkt')
 from nltk.stem.lancaster import LancasterStemmer
 import os
 import json
 import datetime
 import time
 import numpy as np
+
 stemmer = LancasterStemmer()
 
-
 # 3 classes of training data
+
 training_data = []
 
 training_data.append({"class": "positive", "sentence": "I love this car."})
@@ -24,13 +26,13 @@ training_data.append({"class": "negative", "sentence": "I feel tired this mornin
 training_data.append({"class": "negative", "sentence": "I am not looking forward to the concert."})
 training_data.append({"class": "negative", "sentence": "He is my enemy."})
 
-
 training_data.append({"class": "neutral", "sentence": "There is a book on the desk."})
 training_data.append({"class": "neutral", "sentence": "Childhood is the time to play."})
 training_data.append({"class": "neutral", "sentence": "All cows eat grass."})
 training_data.append({"class": "neutral", "sentence": "what's for lunch?"})
 training_data.append({"class": "neutral", "sentence": "I am Mr. Nimbus."})
 
+print("%s sentences in training data" % len(training_data))
 
 words = []
 classes = []
@@ -82,18 +84,21 @@ for doc in documents:
 # sample training/output
 i = 0
 w = documents[i][0]
+
+
 # print([stemmer.stem(word.lower()) for word in w])
 # print(training[i])
-
+# print(output[i])
 
 # compute sigmoid nonlinearity
 def sigmoid(x):
-    output = 1/(1+np.exp(-x))
+    output = 1 / (1 + np.exp(-x))
     return output
+
 
 # convert output of sigmoid function to its derivative
 def sigmoid_output_to_derivative(output):
-    return output*(1-output)
+    return output * (1 - output)
 
 
 def clean_up_sentence(sentence):
@@ -119,7 +124,6 @@ def bow(sentence, words, show_details=False):
 
     return (np.array(bag))
 
-
 def think(sentence, show_details=False):
     x = bow(sentence.lower(), words, show_details)
     if show_details:
@@ -131,7 +135,6 @@ def think(sentence, show_details=False):
     # output layer
     l2 = sigmoid(np.dot(l1, synapse_1))
     return l2
-
 
 
 def train(X, y, hidden_neurons=10, alpha=1, epochs=50000, dropout=False, dropout_percent=0.5):
@@ -216,7 +219,6 @@ def train(X, y, hidden_neurons=10, alpha=1, epochs=50000, dropout=False, dropout
     print("saved synapses to:", synapse_file)
 
 
-
 X = np.array(training)
 y = np.array(output)
 
@@ -226,8 +228,6 @@ train(X, y, hidden_neurons=20, alpha=0.1, epochs=100000, dropout=False, dropout_
 
 elapsed_time = time.time() - start_time
 # print("processing time:", elapsed_time, "seconds")
-
-print("processing time:", elapsed_time, "seconds")
 
 # probability threshold
 ERROR_THRESHOLD = 0.2
@@ -244,7 +244,7 @@ def classify(sentence, show_details=False):
     results = [[i,r] for i,r in enumerate(results) if r>ERROR_THRESHOLD ]
     results.sort(key=lambda x: x[1], reverse=True)
     return_results =[[classes[r[0]],r[1]] for r in results]
-    print ("%s \n classification: %s" % (sentence, return_results))
+    print("%s \n classification: %s" % (sentence, return_results))
     return return_results
 
-classify("All cows are weird!")
+classify("All cows are kinda weird!")
