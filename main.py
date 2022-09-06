@@ -29,4 +29,30 @@ training_data.append({"class": "neutral", "sentence": "All cows eat grass."})
 training_data.append({"class": "neutral", "sentence": "what's for lunch?"})
 training_data.append({"class": "neutral", "sentence": "I am Mr. Nimbus."})
 
-print("%s sentences in training data" % len(training_data))
+
+words = []
+classes = []
+documents = []
+ignore_words = ['?']
+# loop through each sentence in our training data
+for pattern in training_data:
+    # tokenize each word in the sentence
+    w = nltk.word_tokenize(pattern['sentence'])
+    # add to our words list
+    words.extend(w)
+    # add to documents in our corpus
+    documents.append((w, pattern['class']))
+    # add to our classes list
+    if pattern['class'] not in classes:
+        classes.append(pattern['class'])
+
+# stem and lower each word and remove duplicates
+words = [stemmer.stem(w.lower()) for w in words if w not in ignore_words]
+words = list(set(words))
+
+# remove duplicates
+classes = list(set(classes))
+
+print(len(documents), "documents")
+print(len(classes), "classes", classes)
+print(len(words), "unique stemmed words", words)
