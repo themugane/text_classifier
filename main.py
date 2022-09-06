@@ -117,3 +117,16 @@ def bow(sentence, words, show_details=False):
                     print("found in bag: %s" % w)
 
     return (np.array(bag))
+
+
+def think(sentence, show_details=False):
+    x = bow(sentence.lower(), words, show_details)
+    if show_details:
+        print("sentence:", sentence, "\n bow:", x)
+    # input layer is our bag of words
+    l0 = x
+    # matrix multiplication of input and hidden layer
+    l1 = sigmoid(np.dot(l0, synapse_0))
+    # output layer
+    l2 = sigmoid(np.dot(l1, synapse_1))
+    return l2
