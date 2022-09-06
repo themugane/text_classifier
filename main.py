@@ -4,6 +4,7 @@ from nltk.stem.lancaster import LancasterStemmer
 import os
 import json
 import datetime
+import time
 import numpy as np
 stemmer = LancasterStemmer()
 
@@ -213,3 +214,15 @@ def train(X, y, hidden_neurons=10, alpha=1, epochs=50000, dropout=False, dropout
     with open(synapse_file, 'w') as outfile:
         json.dump(synapse, outfile, indent=4, sort_keys=True)
     print("saved synapses to:", synapse_file)
+
+
+
+X = np.array(training)
+y = np.array(output)
+
+start_time = time.time()
+
+train(X, y, hidden_neurons=20, alpha=0.1, epochs=100000, dropout=False, dropout_percent=0.2)
+
+elapsed_time = time.time() - start_time
+print("processing time:", elapsed_time, "seconds")
